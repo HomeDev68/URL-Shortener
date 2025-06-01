@@ -9,7 +9,12 @@ import os
 # init flask
 app = Flask(__name__)
 # Configure SQLite db
-db_path = os.path.join(os.path.dirname(__file__), 'db', 'urls.db')
+db_dir = os.path.join(os.path.dirname(__file__), 'db')
+db_path = os.path.join(db_dir, 'urls.db')
+
+# Create the db directory if it doesn't exist
+if not os.path.exists(db_dir):
+    os.makedirs(db_dir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # Disable modification tracking
 db = SQLAlchemy(app)
