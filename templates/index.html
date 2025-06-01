@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%; /* Ensure body takes full width */
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            width: 340px; /* Match input width + padding + border */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ overflow-wrap: break-word; /* Add this line */
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            display: block; /* Make the button a block element */
+            margin: 0 auto; /* Center the button horizontally */
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .result {
+            width: 340px; /* Match form width */
+            text-align: center; /* Center the text */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9e9e9;
+            border-radius: 4px;
+            font-weight: bold;
+            visibility: hidden; /* Initially hidden */
+            overflow-wrap: break-word; /* Add this line */
+            display: flex; /* Use flexbox to align items */
+            justify-content: space-between; /* Distribute space between text and icon */
+            align-items: center; /* Vertically align items */
+        }
+        .copy-icon {
+        cursor: pointer;
+        margin-left: 10px; /* Add some space between the text and the icon */
+        width: 20px; /* Adjust icon size as needed */
+        }
+        .copy-icon:hover {
+            opacity: 0.7; /* Add a slight visual feedback on hover */
+
+        }
+    </style>
+</head>
+<body class="container">
+    <h1>URL Shortener</h1>
+    <form action="/shorten" method="post">
+        <label for="url">Enter a URL:</label>
+        <input type="text" id="url" name="url" required><br><br>
+        <button type="submit">Shorten</button>
+    </form>
+    <div class="result"><span class="short-url-text"></span><img src="https://www.svgrepo.com/download/374827/copy-to-clipboard.svg" alt="Copy to clipboard" class="copy-icon"></div>
+    <script>
+        const resultElement = document.querySelector('.result');
+        const form = document.querySelector('form');
+    
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const urlInput = document.getElementById('url');
+            const url = urlInput.value;
+    
+            try {
+                const response = await fetch('/shorten', {
+                    method: 'POST',
+                    headers: {
+ 'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: url }),
+                    });
+                
+                    if (response.ok) {
+                        const data = await response.json();
+                        const shortUrl = data.shortUrl;
+                        const baseUrl = window.location.origin; // Get the base URL of the current page
+                        resultElement.style.visibility = 'visible'; // Make visible when data is available
+                        resultElement.querySelector('.short-url-text').textContent = `Shortened URL: ${baseUrl}/${shortUrl}`;
+                    } else {
+                        resultElement.querySelector('.short-url-text').textContent = 'Error shortening URL';
+                        resultElement.style.visibility = 'visible'; // Make visible to show the error
+                        resultElement.querySelector('.copy-icon').style.display = 'none'; // Hide copy icon on error
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    resultElement.querySelector('.short-url-text').textContent = 'An error occurred. Check the console log for more details.';
+                    resultElement.style.visibility = 'visible'; // Make visible to show the error
+                    resultElement.querySelector('.copy-icon').style.display = 'none'; // Hide copy icon on error
+ }
+ });
+
+        const copyIcon = document.querySelector('.copy-icon');
+        copyIcon.addEventListener('click', () => {
+            const shortUrlText = resultElement.querySelector('.short-url-text').textContent.replace('Shortened URL: ', '');
+            navigator.clipboard.writeText(shortUrlText).then(() => {
+                alert('Copied to clipboard!');
+            });
+        });
+    </script>
+</body>
+</html>
