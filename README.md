@@ -16,8 +16,9 @@ A simple URL shortener service built with Flask, SQLAlchemy, and SQLite in Pytho
 *   **HTML/CSS:**  For basic front-end templating and styling.
 
 ## TO-DO
-- Add Rate-limiting
-- Add favicon
+- **Add favicon**
+- **Rate Limiting:**  Implement rate limiting to prevent abuse of the URL shortening service.  (Consider using Flask-Limiter).
+- **Custom Short Codes:**  Allow users to specify custom short codes for their URLs.
 
 ## Setup and Installation
 
