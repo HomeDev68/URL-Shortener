@@ -15,6 +15,10 @@ A simple URL shortener service built with Flask, SQLAlchemy, and SQLite in Pytho
 *   **SQLite:**  A C-language library that implements a small, fast, self-contained, high reliability, full-featured, SQL database engine.
 *   **HTML/CSS:**  For basic front-end templating and styling.
 
+## TO-DO
+- Add Rate-limiting
+- Add favicon
+
 ## Setup and Installation
 
 1.  **Clone the repository:**
