@@ -24,7 +24,7 @@ A simple URL shortener service built with Flask, SQLAlchemy, and SQLite in Pytho
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/HomeDev68/URL-Shortener urlshortener
+    git clone https://github.com/HomeDev68/urlshortener
     cd urlshortener
     ```
 
